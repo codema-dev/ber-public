@@ -10,7 +10,7 @@ from prefect import task
 from tqdm import tqdm
 
 
-HERE = Path(__name__)
+HERE = Path(__file__).parent
 
 
 def download_file_from_response(response: requests.Response, filepath: str) -> None:
