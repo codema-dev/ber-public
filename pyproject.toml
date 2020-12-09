@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "berpublicsearch"
+version = "0.1.0"
+description = "Sets up a sandbox notebook environment for querying SEAI's BER Public search database"
+authors = ["Rowan Molony <rowan.molony@codema.ie>, Oisin Doherty <oisin.doherty@codema.ie>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.6 || ^3.7 || ^3.8 || ^3.9"
+dask = {extras = ["dataframe"], version = "^2.30.0"}
+prefect = "^0.13.19"
+requests = "^2.25.0"
+tqdm = "^4.54.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
