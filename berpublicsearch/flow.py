@@ -7,6 +7,7 @@ from berpublicsearch import download
 
 with Flow("Download BERPublicsearch.zip & convert to parquet") as flow:
 
+    email_address = Parameter("email_address")
     path_to_berpublicsearch_zip = Parameter("path_to_berpublicsearch_zip")
     path_to_berpublicsearch_temp = "BERPublicsearch_temp"
     path_to_berpublicsearch_parquet = Parameter("path_to_berpublicsearch_parquet")
