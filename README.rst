@@ -33,11 +33,17 @@ This repository was setup by the `codema-dev` team as part of the SEAI RD&D fund
 
 __ https://www.codema.ie/projects/local-projects/dublin-region-energy-master-plan/
 
-    .. image:: images/codema.png
-            :target: https://codema.ie/
+.. raw:: html
 
-    .. image:: images/seai.png
-            :target: https://seai.ie/
+    <a href="https://www.codema.ie">
+        <img src="images/codema.png" height="100px"> 
+    </a> &emsp;
+
+.. raw:: html
+
+    <a href="https://www.seai.ie">
+        <img src="images/seai.png" height="50px"> 
+    </a> &emsp;
 
 ------------
 
