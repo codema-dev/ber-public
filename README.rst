@@ -2,6 +2,14 @@
 berpublicsearch
 ===============
 
+.. image:: https://img.shields.io/pypi/l/berpublicsearch
+    :target: https://img.shields.io/pypi/l/berpublicsearch
+    :alt: License
+
+.. image:: https://img.shields.io/pypi/v/berpublicsearch
+    :target: https://img.shields.io/pypi/v/berpublicsearch
+    :alt: Pypi version
+
 The aim of this repository is to simplify working work with SEAI's BER Public search dataset
 
 ... with the help of the open source `Python` software :code:`prefect`, :code:`dask` and :code:`requests`
