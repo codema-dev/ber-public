@@ -2,7 +2,7 @@
 name = "berpublicsearch"
 version = "0.1.0"
 description = "Sets up a sandbox notebook environment for querying SEAI's BER Public search database"
-authors = ["Rowan Molony <rowan.molony@codema.ie>, Oisin Doherty <oisin.doherty@codema.ie>"]
+authors = ["Rowan Molony <rowan.molony@codema.ie>", "Oisin Doherty <oisin.doherty@codema.ie>"]
 license = "MIT"
 
 [tool.poetry.dependencies]
