@@ -6,11 +6,13 @@ authors = ["Rowan Molony <rowan.molony@codema.ie>", "Oisin Doherty <oisin.dohert
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.6 || ^3.7 || ^3.8 || ^3.9"
-dask = {extras = ["dataframe"], version = "^2.30.0"}
-prefect = "^0.13.19"
-requests = "^2.25.0"
+python = "3.6.9"
+google-colab = "^1.0.0"
+prefect = "*"
+requests = "*"
+pandas = "*"
 tqdm = "^4.54.1"
+dask = {version = "*", extras = ["dataframe"]}
 
 [tool.poetry.dev-dependencies]
 
