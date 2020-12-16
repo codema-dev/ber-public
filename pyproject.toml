@@ -1,18 +1,16 @@
 [tool.poetry]
 name = "berpublicsearch"
 version = "0.1.0"
-description = "Sets up a sandbox notebook environment for querying SEAI's BER Public search database"
-authors = ["Rowan Molony <rowan.molony@codema.ie>", "Oisin Doherty <oisin.doherty@codema.ie>"]
-license = "MIT"
+description = ""
+authors = ["Rowan Molony <rowan.molony@codema.ie>"]
 
 [tool.poetry.dependencies]
-python = "3.6.9"
-google-colab = "^1.0.0"
-prefect = "*"
-requests = "*"
-pandas = "*"
+python = "^3.6.1 || ^3.7"
 tqdm = "^4.54.1"
-dask = {version = "*", extras = ["dataframe"]}
+requests = "^2.25.0"
+prefect = "^0.13.19"
+dask = {extras = ["dataframe"], version = "^2020.12.0"}
+pandas = "^1.1.5"
 
 [tool.poetry.dev-dependencies]
 
