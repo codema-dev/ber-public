@@ -6,7 +6,6 @@ from typing import Any
 
 import requests
 
-from prefect import task
 from tqdm import tqdm
 
 
@@ -33,8 +32,7 @@ def download_file_from_response(response: requests.Response, filepath: str) -> N
     progress_bar.close()
 
 
-@task
-def download(email_address: str, filepath: str) -> None:
+def download_berpublicsearch(email_address: str, filepath: str) -> None:
     """Login & Download BER data.
 
     Warning:
