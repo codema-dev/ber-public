@@ -33,7 +33,6 @@ def convert_to_parquet(input_dirpath: str, output_filepath: str) -> None:
         dtype=dtypes,
         encoding="latin-1",
         quoting=csv.QUOTE_NONE,
-        engine="fastparquet",
     )
 
     ber_raw.to_parquet(output_filepath, engine="pyarrow")
