@@ -12,4 +12,7 @@ dependencies:
   - dask
   - pyarrow
   - tqdm
+  - pre-commit
+  - jupyter
+  - jupyter_contrib_nbextensions
 prefix: /home/wsl-rowanm/miniconda3
