@@ -15,4 +15,10 @@ dependencies:
   - pre-commit
   - jupyter
   - jupyter_contrib_nbextensions
+  - seaborn
+  - matplotlib
+  - descartes
+  - pip
+  - pip:
+    - seai_deap
 prefix: /home/wsl-rowanm/miniconda3
