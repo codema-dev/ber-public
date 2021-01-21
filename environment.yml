@@ -1,10 +1,9 @@
-name: base
+name: ber
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - conda
-  - python=3.8
+  - python
   - geopandas
   - poetry
   - ipython
@@ -20,5 +19,5 @@ dependencies:
   - descartes
   - pip
   - pip:
-    - seai_deap
-prefix: /home/wsl-rowanm/miniconda3
+    - seai-deap
+    - git+https://github.com/codema-dev/berpublicsearch
