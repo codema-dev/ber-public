@@ -17,6 +17,7 @@ dependencies:
   - seaborn
   - matplotlib
   - descartes
+  - numexpr
   - pip
   - pip:
     - seai-deap
