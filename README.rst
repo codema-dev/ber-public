@@ -12,7 +12,7 @@ berpublicsearch
 
 The aim of this repository is to simplify working work with SEAI's BER Public search dataset
 
-... with the help of the open source `Python` software :code:`prefect`, :code:`dask` and :code:`requests`
+... with the help of the open source `Python` software :code:`dask` and :code:`requests`
 
 ... via:
 
@@ -60,27 +60,7 @@ Installation
 
 To setup the `berpublicsearch` sandbox:
 
-- Google Collab:
-
-    - Click the Google Collab badge & open `sandbox.ipynb`:
+- Click the Google Collab badge & open `setup.ipynb`:
     
-        .. image:: https://colab.research.google.com/assets/colab-badge.svg
-                :target: https://colab.research.google.com/github/codema-dev/berpublicsearch
-                
-    - Mount your Google Drive to your Google Collab instance & refresh your filetree
-
-        .. image:: images/mount-gdrive.jpg
-    
-    - Copy the path to your Google Drive data folder and paste it into the appropriate string
-
-        .. image:: images/copy-path.png
-
-    - For more information see `External data: Local Files, Drive, Sheets, and Cloud Storage`__
-    
-    __ https://colab.research.google.com/notebooks/io.ipynb
-
-- Local:
-    - Unzip the dataset
-    - Clone this repository locally via :code:`git clone https://github.com/codema-dev/berpublicsearch` 
-    - Launch `Jupyter Notebook` and open the relevant sandbox file in the `notebooks` folder 
-
+    .. image:: https://colab.research.google.com/assets/colab-badge.svg
+            :target: https://colab.research.google.com/github/codema-dev/berpublicsearch
