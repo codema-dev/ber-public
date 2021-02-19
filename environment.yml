@@ -1,24 +1,23 @@
-name: ber
+name: berpublicsearch
 channels:
   - conda-forge
   - defaults
 dependencies:
   - python
+
   - geopandas
-  - poetry
-  - ipython
-  - requests
   - dask
+  - requests
+
   - pyarrow
+  - numexpr
   - tqdm
-  - pre-commit
-  - jupyter
-  - jupyter_contrib_nbextensions
+  
   - seaborn
   - matplotlib
   - descartes
-  - numexpr
+
   - pip
   - pip:
     - seai-deap
-    - git+https://github.com/codema-dev/berpublicsearch
+    - berpublicsearch
