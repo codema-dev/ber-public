@@ -42,7 +42,7 @@ def download_berpublicsearch(email_address: str, savedir: str = Path.cwd()) -> N
         email_address (str): Registered Email address with SEAI
         savedir (str): Save directory for data
     """
-    savepath = path.join(savedir, "BERPublicsearch")
+    savepath = path.join(savedir, "BERPublicsearch.zip")
 
     with open(HERE / "request.json", "r") as json_file:
         ber_form_data = json.load(json_file)
@@ -92,9 +92,9 @@ def download_berpublicsearch_parquet(
         savedir (str): Save directory for data
     """
     print("Download BERPublicsearch.zip...")
-    path_to_zipped = path.join(savedir, "BERPublicsearch.zip")
-    download_berpublicsearch(email_address, path_to_zipped)
+    download_berpublicsearch(email_address, savedir)
 
+    path_to_zipped = path.join(savedir, "BERPublicsearch.zip")
     print(f"Unzipping {path_to_zipped}...")
     path_to_unzipped = path.join(savedir, "BERPublicsearch")
     unpack_archive(path_to_zipped, path_to_unzipped)
