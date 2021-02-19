@@ -1,19 +1,14 @@
 import csv
 import json
-from shutil import unpack_archive
-
 from os import path
 from pathlib import Path
+from shutil import unpack_archive
 
+from dask.diagnostics import ProgressBar
 import dask.dataframe as dd
 
 
 HERE = Path(__file__).parent
-
-
-def unzip(input_filepath: str, output_filepath: str) -> None:
-
-    unpack_archive(input_filepath, output_filepath)
 
 
 def convert_to_parquet(input_dirpath: str, output_filepath: str) -> None:
@@ -35,4 +30,5 @@ def convert_to_parquet(input_dirpath: str, output_filepath: str) -> None:
         quoting=csv.QUOTE_NONE,
     )
 
-    ber_raw.to_parquet(output_filepath, engine="pyarrow")
+    with ProgressBar():
+        ber_raw.to_parquet(output_filepath, engine="pyarrow")

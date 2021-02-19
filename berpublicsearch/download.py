@@ -1,12 +1,15 @@
 import json
-
 from os import path
+from os import mkdir
 from pathlib import Path
+from shutil import unpack_archive
 from typing import Any
 
 import requests
-
+from requests import HTTPError
 from tqdm import tqdm
+
+from berpublicsearch.convert import convert_to_parquet
 
 
 HERE = Path(__file__).parent
@@ -37,7 +40,7 @@ def download_berpublicsearch(email_address: str, filepath: str) -> None:
 
     Warning:
         Email address must first be registered with SEAI at
-            https://ndber.seai.ie/BERResearchTool/Register/Register.aspx
+
 
     Args:
         email_address (str): Registered Email address with SEAI
@@ -54,11 +57,18 @@ def download_berpublicsearch(email_address: str, filepath: str) -> None:
     with requests.Session() as session:
 
         # Login to BER Research Tool using email address
-        session.post(
+        response = session.post(
             url="https://ndber.seai.ie/BERResearchTool/Register/Register.aspx",
             headers=ber_form_data["headers"],
             data=ber_form_data["login"],
         )
+
+        if "not registered" in str(response.content):
+            raise ValueError(
+                f"{email_address} does not have access to the BER Public"
+                f" search database, please login to {email_address} and"
+                " respond to your registration email and try again."
+            )
 
         # Download Ber data via a post request
         with session.post(
@@ -68,5 +78,30 @@ def download_berpublicsearch(email_address: str, filepath: str) -> None:
             stream=True,
         ) as response:
 
-            response.raise_for_status()
             download_file_from_response(response, filepath)
+
+
+def get_berpublicsearch_parquet(
+    email_address: str,
+    savedirpath: str = Path.cwd(),
+) -> None:
+    """Login, download & convert BER data to parquet.
+
+    Warning:
+        Email address must first be registered with SEAI at
+            https://ndber.seai.ie/BERResearchTool/Register/Register.aspx
+
+    Args:
+        email_address (str): Registered Email address with SEAI
+        filepath (str): Save path for data
+    """
+    print("Download BERPublicsearch.zip...")
+    path_to_zipped = f"{savedirpath}/BERPublicsearch.zip"
+    download_berpublicsearch(email_address, path_to_zipped)
+
+    path_to_unzipped = f"{savedirpath}/BERPublicsearch"
+    unpack_archive(path_to_zipped, path_to_unzipped)
+
+    print("Converting BERPublicsearch to BERPublicsearch_parquet...")
+    path_to_parquet = f"{savedirpath}/BERPublicsearch_parquet"
+    convert_to_parquet(path_to_unzipped, path_to_parquet)
