@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "berpublicsearch"
-version = "0.2.2"
+version = "0.2.3"
 description = ""
 authors = ["Rowan Molony <rowan.molony@codema.ie>"]
 
