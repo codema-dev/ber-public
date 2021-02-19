@@ -35,17 +35,15 @@ def download_file_from_response(response: requests.Response, filepath: str) -> N
     progress_bar.close()
 
 
-def download_berpublicsearch(email_address: str, filepath: str) -> None:
+def download_berpublicsearch(email_address: str, savedir: str = Path.cwd()) -> None:
     """Login & Download BER data.
-
-    Warning:
-        Email address must first be registered with SEAI at
-
 
     Args:
         email_address (str): Registered Email address with SEAI
-        filepath (str): Save path for data
+        savedir (str): Save directory for data
     """
+    savepath = path.join(savedir, "BERPublicsearch")
+
     with open(HERE / "request.json", "r") as json_file:
         ber_form_data = json.load(json_file)
 
@@ -63,6 +61,7 @@ def download_berpublicsearch(email_address: str, filepath: str) -> None:
             data=ber_form_data["login"],
         )
 
+        response.raise_for_status()
         if "not registered" in str(response.content):
             raise ValueError(
                 f"{email_address} does not have access to the BER Public"
@@ -78,30 +77,28 @@ def download_berpublicsearch(email_address: str, filepath: str) -> None:
             stream=True,
         ) as response:
 
-            download_file_from_response(response, filepath)
+            response.raise_for_status()
+            download_file_from_response(response, savepath)
 
 
-def get_berpublicsearch_parquet(
+def download_berpublicsearch_parquet(
     email_address: str,
-    savedirpath: str = Path.cwd(),
+    savedir: str = Path.cwd(),
 ) -> None:
-    """Login, download & convert BER data to parquet.
-
-    Warning:
-        Email address must first be registered with SEAI at
-            https://ndber.seai.ie/BERResearchTool/Register/Register.aspx
+    """Login, download, unzip & convert BER data to parquet.
 
     Args:
         email_address (str): Registered Email address with SEAI
-        filepath (str): Save path for data
+        savedir (str): Save directory for data
     """
     print("Download BERPublicsearch.zip...")
-    path_to_zipped = f"{savedirpath}/BERPublicsearch.zip"
+    path_to_zipped = path.join(savedir, "BERPublicsearch.zip")
     download_berpublicsearch(email_address, path_to_zipped)
 
-    path_to_unzipped = f"{savedirpath}/BERPublicsearch"
+    print(f"Unzipping {path_to_zipped}...")
+    path_to_unzipped = path.join(savedir, "BERPublicsearch")
     unpack_archive(path_to_zipped, path_to_unzipped)
 
     print("Converting BERPublicsearch to BERPublicsearch_parquet...")
-    path_to_parquet = f"{savedirpath}/BERPublicsearch_parquet"
+    path_to_parquet = path.join(savedir, "BERPublicsearch_parquet")
     convert_to_parquet(path_to_unzipped, path_to_parquet)
