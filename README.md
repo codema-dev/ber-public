@@ -1,7 +1,6 @@
 # berpublicsearch
 
 [![PyPI version shields.io](https://img.shields.io/pypi/v/berpublicsearch.svg)](https://pypi.python.org/pypi/berpublicsearch/)
-[![PyPI license](https://img.shields.io/pypi/l/berpublicsearch.svg)](https://pypi.python.org/pypi/berpublicsearch/)
 [![PyPI pyversions](https://img.shields.io/pypi/pyversions/berpublicsearch.svg)](https://pypi.python.org/pypi/berpublicsearch/)
 
 This repository simplifies working work with SEAI's BER Public search dataset with the help of [`dask`](https://github.com/dask/dask) & [`requests`](https://github.com/psf/requests)
