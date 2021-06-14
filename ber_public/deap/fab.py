@@ -62,8 +62,15 @@ def calculate_heat_loss_parameter(
         thermal_bridging_factor=thermal_bridging_factor,
     )
     ventilation_heat_loss = vent.calculate_ventilation_heat_loss(
-        building_volume=building_volume,
         effective_air_rate_change=effective_air_rate_change,
+        ground_floor_area=ground_floor_area,
+        ground_floor_height=ground_floor_height,
+        first_floor_area=first_floor_area,
+        first_floor_height=first_floor_height,
+        second_floor_area=second_floor_area,
+        second_floor_height=second_floor_height,
+        third_floor_area=third_floor_area,
+        third_floor_height=third_floor_height,
     )
     heat_loss_coefficient = fabric_heat_loss + ventilation_heat_loss
     return heat_loss_coefficient / total_floor_area
