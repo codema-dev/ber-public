@@ -1,3 +1,12 @@
+"""
+Replicate DEAP 4.2.2 Vent Excel calculations
+
+Assumptions:
+
+Structure Types
+- Unknown are Masonry as 82/96 buildings are masonry
+- Concrete has an infiltration rate of 0
+"""
 import numpy as np
 import pandas as pd
 
@@ -21,11 +30,11 @@ SUSPENDED_FLOOR_TYPES = {
 STRUCTURE_TYPES = {
     "Masonry                       ": "masonry",
     "Please select                 ": np.nan,
-    "Timber or Steel Frame         ": "timber",
+    "Timber or Steel Frame         ": "timber_or_steel",
     "Insulated Conctete Form       ": "concrete",
 }
 
-DRAUGHT_LOBBY_TYPES = {"YES": True, "NO": False}
+YES_NO = {"YES": True, "NO": False}
 
 
 def _calculate_infiltration_rate_due_to_openings(
@@ -35,14 +44,14 @@ def _calculate_infiltration_rate_due_to_openings(
     no_fans,
     no_room_heaters,
     is_draught_lobby,
-    draught_lobby_types,
+    draught_lobby_boolean,
 ):
     infiltration_rate_due_to_openings = (
         no_chimneys * 40 + no_open_flues * 20 + no_fans * 10 + no_room_heaters * 40
     )
     is_building_empty = building_volume == 0
     infiltration_rate_due_to_draught_lobby = is_draught_lobby.map(
-        draught_lobby_types
+        draught_lobby_boolean
     ).map({True: 0.05, False: 0})
     return building_volume.where(
         is_building_empty,
@@ -60,12 +69,13 @@ def _calculate_infiltration_rate_due_to_structure(
     structure_type,
     suspended_floor_types=SUSPENDED_FLOOR_TYPES,
     structure_types=STRUCTURE_TYPES,
+    permeability_test_boolean=YES_NO,
 ):
     infiltration_rate_due_to_height = (no_storeys - 1) * 0.1
     infiltration_rate_due_to_structure_type = (
         structure_type.map(structure_types)
-        .map({"masonry": 0.35, "timber": 0.25, "concrete": 0})
-        .fillna("masonry")
+        .map({"masonry": 0.35, "timber_or_steel": 0.25, "concrete": 0})  # ASSUMPTION:
+        .fillna(0.35)  # ASSUMPTION
     )
     infiltration_rate_due_to_suspended_floor = (
         is_floor_suspended.map(suspended_floor_types)
@@ -76,7 +86,7 @@ def _calculate_infiltration_rate_due_to_structure(
         0.2 * (percentage_draught_stripped / 100)
     )
     return permeability_test_result.where(
-        is_permeability_tested,
+        is_permeability_tested.map(permeability_test_boolean),
         infiltration_rate_due_to_height
         + infiltration_rate_due_to_structure_type
         + infiltration_rate_due_to_suspended_floor
@@ -85,22 +95,23 @@ def _calculate_infiltration_rate_due_to_structure(
 
 
 def calculate_infiltration_rate(
+    no_sides_sheltered,
     building_volume,
     no_chimneys,
     no_open_flues,
     no_fans,
     no_room_heaters,
     is_draught_lobby,
-    no_sides_sheltered,
     is_permeability_tested,
     permeability_test_result,
     no_storeys,
     percentage_draught_stripped,
     is_floor_suspended,
     structure_type,
-    draught_lobby_types=DRAUGHT_LOBBY_TYPES,
+    draught_lobby_boolean=YES_NO,
     suspended_floor_types=SUSPENDED_FLOOR_TYPES,
     structure_types=STRUCTURE_TYPES,
+    permeability_test_boolean=YES_NO,
 ):
     infiltration_rate_due_to_openings = _calculate_infiltration_rate_due_to_openings(
         building_volume=building_volume,
@@ -109,7 +120,7 @@ def calculate_infiltration_rate(
         no_fans=no_fans,
         no_room_heaters=no_room_heaters,
         is_draught_lobby=is_draught_lobby,
-        draught_lobby_types=draught_lobby_types,
+        draught_lobby_boolean=draught_lobby_boolean,
     )
 
     infiltration_rate_due_to_structure = _calculate_infiltration_rate_due_to_structure(
@@ -121,11 +132,12 @@ def calculate_infiltration_rate(
         structure_type=structure_type,
         suspended_floor_types=suspended_floor_types,
         structure_types=structure_types,
+        permeability_test_boolean=permeability_test_boolean,
     )
 
-    infiltration_rate_due_to_sides = infiltration_rate_due_to_structure * (
-        1 - no_sides_sheltered * 0.075
-    )
+    return (
+        infiltration_rate_due_to_openings + infiltration_rate_due_to_structure
+    ) * 1 - no_sides_sheltered * 0.075
 
 
 def _calculate_natural_ventilation_air_rate_change(infiltration_rate):

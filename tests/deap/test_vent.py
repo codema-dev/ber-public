@@ -1,4 +1,4 @@
-from numpy import exp
+import numpy as np
 import pandas as pd
 from pandas.testing import assert_series_equal
 
@@ -12,7 +12,6 @@ def test_calculate_infiltration_rate_due_to_openings():
     no_fans = pd.Series([0, 0, 1])
     no_room_heaters = pd.Series([0, 0, 1])
     is_draught_lobby = pd.Series(["NO", "YES", "NO"])
-    draught_lobby_types = vent.DRAUGHT_LOBBY_TYPES
     expected_output = pd.Series([0, 0.05, 0.55])
 
     output = vent._calculate_infiltration_rate_due_to_openings(
@@ -22,14 +21,75 @@ def test_calculate_infiltration_rate_due_to_openings():
         no_fans=no_fans,
         no_room_heaters=no_room_heaters,
         is_draught_lobby=is_draught_lobby,
-        draught_lobby_types=draught_lobby_types,
+        draught_lobby_boolean=vent.YES_NO,
     )
 
     assert_series_equal(output, expected_output)
 
 
 def test_calculate_infiltration_rate_due_to_structure():
-    pass
+    is_permeability_tested = pd.Series(["YES", "NO", "NO"])
+    permeability_test_result = pd.Series([0.144, np.nan, np.nan])
+    no_storeys = pd.Series([np.nan, 1, 2])
+    percentage_draught_stripped = pd.Series([np.nan, 100, 75])
+    is_floor_suspended = pd.Series(
+        [np.nan, "No                            ", "Yes (Unsealed)                "]
+    )
+    structure_type = pd.Series(
+        [np.nan, "Timber or Steel Frame         ", "Masonry                       "]
+    )
+    expected_output = pd.Series([0.144, 0.3, 0.75])
+
+    output = vent._calculate_infiltration_rate_due_to_structure(
+        is_permeability_tested=is_permeability_tested,
+        permeability_test_result=permeability_test_result,
+        no_storeys=no_storeys,
+        percentage_draught_stripped=percentage_draught_stripped,
+        is_floor_suspended=is_floor_suspended,
+        structure_type=structure_type,
+        suspended_floor_types=vent.SUSPENDED_FLOOR_TYPES,
+        structure_types=vent.STRUCTURE_TYPES,
+        permeability_test_boolean=vent.YES_NO,
+    )
+
+    assert_series_equal(output, expected_output)
+
+
+def test_calculate_infiltration_rate(monkeypatch):
+    no_sides_sheltered = pd.Series([0, 1])
+
+    def _mock_infiltration_rate_calc(*args, **kwargs):
+        return pd.Series([0.5, 0.5])
+
+    monkeypatch.setattr(
+        vent,
+        "_calculate_infiltration_rate_due_to_openings",
+        _mock_infiltration_rate_calc,
+    )
+    monkeypatch.setattr(
+        vent,
+        "_calculate_infiltration_rate_due_to_structure",
+        _mock_infiltration_rate_calc,
+    )
+    expected_output = pd.Series([1, 0.925])
+
+    output = vent.calculate_infiltration_rate(
+        no_sides_sheltered,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+        None,
+    )
+
+    assert_series_equal(output, expected_output)
 
 
 def test_calculate_outside_ventilation_air_rate_change():
