@@ -9,6 +9,13 @@ requirements = [
     "tqdm",
 ]
 
+dev_requires = ["black"]
+test_requires = ["pytest", "pytest-cov"]
+extras = {
+    "all": requirements + test_requires + dev_requires,
+    "dev": test_requires + dev_requires,
+}
+
 setup(
     name="ber_public",
     version=versioneer.get_version(),
@@ -21,6 +28,7 @@ setup(
     packages=["ber_public"],
     entry_points={"console_scripts": ["ber_public=ber_public.cli:cli"]},
     install_requires=requirements,
+    extras_require=extras,
     keywords="ber_public",
     classifiers=[
         "Programming Language :: Python :: 2.7",
