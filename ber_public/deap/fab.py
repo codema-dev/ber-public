@@ -33,37 +33,9 @@ def calculate_fabric_heat_loss(
 
 
 def calculate_heat_loss_parameter(
-    roof_area,
-    roof_uvalue,
-    wall_area,
-    wall_uvalue,
-    floor_area,
-    floor_uvalue,
-    window_area,
-    window_uvalue,
-    door_area,
-    door_uvalue,
-    total_floor_area,
-    thermal_bridging_factor,
-    effective_air_rate_change,
-    building_volume,
+    fabric_heat_loss: pd.Series,
+    ventilation_heat_loss: pd.Series,
+    total_floor_area: pd.Series,
 ) -> pd.DataFrame:
-    fabric_heat_loss = calculate_fabric_heat_loss(
-        roof_area=roof_area,
-        roof_uvalue=roof_uvalue,
-        wall_area=wall_area,
-        wall_uvalue=wall_uvalue,
-        floor_area=floor_area,
-        floor_uvalue=floor_uvalue,
-        window_area=window_area,
-        window_uvalue=window_uvalue,
-        door_area=door_area,
-        door_uvalue=door_uvalue,
-        thermal_bridging_factor=thermal_bridging_factor,
-    )
-    ventilation_heat_loss = vent.calculate_ventilation_heat_loss(
-        building_volume=building_volume,
-        effective_air_rate_change=effective_air_rate_change,
-    )
     heat_loss_coefficient = fabric_heat_loss + ventilation_heat_loss
     return heat_loss_coefficient / total_floor_area
