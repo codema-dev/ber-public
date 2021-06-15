@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "berpublicsearch"
+name = "ber-public"
 version = "0.2.4"
 description = "Explore SEAI's BER Public search database with Python"
 authors = ["Rowan Molony <rowan.molony@codema.ie>"]
