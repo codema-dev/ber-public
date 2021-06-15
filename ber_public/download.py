@@ -9,7 +9,7 @@ import requests
 from requests import HTTPError
 from tqdm import tqdm
 
-from berpublicsearch.convert import convert_to_parquet
+from ber_public.convert import convert_to_parquet
 
 
 HERE = Path(__file__).parent
