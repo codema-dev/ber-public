@@ -1,5 +1,7 @@
+import numpy as np
 import pandas as pd
 from pandas.testing import assert_series_equal
+import pytest
 
 from ber_public.deap import dim
 from ber_public.deap import fab
@@ -54,3 +56,14 @@ def test_calculate_heat_loss_parameter():
     )
 
     assert_series_equal(output.round(2), expected_output)
+
+
+@pytest.mark.parametrize("floor_area", [pd.Series([np.nan]), pd.Series([0])])
+def test_calculate_heat_loss_parameter_raises_zerodivisionerror(floor_area):
+    empty_series = pd.Series([np.nan])
+    with pytest.raises(ZeroDivisionError):
+        fab.calculate_heat_loss_parameter(
+            fabric_heat_loss=empty_series,
+            ventilation_heat_loss=empty_series,
+            total_floor_area=floor_area,
+        )
