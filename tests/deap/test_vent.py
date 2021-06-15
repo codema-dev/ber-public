@@ -30,17 +30,18 @@ def test_calculate_infiltration_rate_due_to_openings():
 
 
 def test_calculate_infiltration_rate_due_to_structure():
+    """Output is equivalent to DEAP 4.2.0 example A"""
     is_permeability_tested = pd.Series(["YES", "NO", "NO"])
-    permeability_test_result = pd.Series([0.144, np.nan, np.nan])
-    no_storeys = pd.Series([np.nan, 1, 2])
+    permeability_test_result = pd.Series([0.15, np.nan, np.nan])
+    no_storeys = pd.Series([np.nan, 2, 1])
     percentage_draught_stripped = pd.Series([np.nan, 100, 75])
     is_floor_suspended = pd.Series(
         [np.nan, "No                            ", "Yes (Unsealed)                "]
     )
     structure_type = pd.Series(
-        [np.nan, "Timber or Steel Frame         ", "Masonry                       "]
+        [np.nan, "Masonry                       ", "Timber or Steel Frame         "]
     )
-    expected_output = pd.Series([0.144, 0.3, 0.75])
+    expected_output = pd.Series([0.15, 0.5, 0.55])
 
     output = vent._calculate_infiltration_rate_due_to_structure(
         is_permeability_tested=is_permeability_tested,
@@ -54,7 +55,7 @@ def test_calculate_infiltration_rate_due_to_structure():
         permeability_test_boolean=vent.YES_NO,
     )
 
-    assert_series_equal(output, expected_output)
+    assert_series_equal(output.round(2), expected_output)
 
 
 def test_calculate_infiltration_rate(monkeypatch):
