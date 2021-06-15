@@ -1,7 +1,9 @@
 import pandas as pd
 from pandas.testing import assert_series_equal
 
+from ber_public.deap import dim
 from ber_public.deap import fab
+from ber_public.deap import vent
 
 
 def test_calculate_fabric_heat_loss():

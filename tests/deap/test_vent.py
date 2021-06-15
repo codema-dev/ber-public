@@ -1,3 +1,4 @@
+from tests.deap.conftest import building_area, building_volume
 import numpy as np
 import pandas as pd
 from pandas.testing import assert_series_equal
@@ -74,19 +75,23 @@ def test_calculate_infiltration_rate(monkeypatch):
     expected_output = pd.Series([1, 0.925])
 
     output = vent.calculate_infiltration_rate(
-        no_sides_sheltered,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
-        None,
+        no_sides_sheltered=no_sides_sheltered,
+        building_volume=None,
+        no_chimneys=None,
+        no_open_flues=None,
+        no_fans=None,
+        no_room_heaters=None,
+        is_draught_lobby=None,
+        is_permeability_tested=None,
+        permeability_test_result=None,
+        no_storeys=None,
+        percentage_draught_stripped=None,
+        is_floor_suspended=None,
+        structure_type=None,
+        draught_lobby_boolean=None,
+        suspended_floor_types=None,
+        structure_types=None,
+        permeability_test_boolean=None,
     )
 
     assert_series_equal(output, expected_output)
@@ -126,33 +131,48 @@ def test_calculate_effective_air_rate_change():
     assert_series_equal(output, expected_output)
 
 
-def test_calculate_ventilation_heat_loss(building_floor_dimensions, building_fabric):
+def test_calculate_ventilation_heat_loss(monkeypatch):
     """Output is equivalent to DEAP 4.2.0 example A"""
-    effective_air_rate_change = building_fabric[-1]
-    (
-        ground_floor_area,
-        ground_floor_height,
-        first_floor_area,
-        first_floor_height,
-        second_floor_area,
-        second_floor_height,
-        third_floor_area,
-        third_floor_height,
-    ) = building_floor_dimensions
 
-    expected_output = pd.Series([53], dtype="int64")
+    def _mock_calc(*args, **kwargs):
+        return pd.Series([0.5])
+
+    monkeypatch.setattr(
+        vent,
+        "calculate_infiltration_rate",
+        _mock_calc,
+    )
+    monkeypatch.setattr(
+        vent,
+        "calculate_effective_air_rate_change",
+        _mock_calc,
+    )
+
+    building_volume = pd.Series([100])
+    expected_output = pd.Series([16.5])
 
     output = vent.calculate_ventilation_heat_loss(
-        effective_air_rate_change=effective_air_rate_change,
-        ground_floor_area=ground_floor_area,
-        ground_floor_height=ground_floor_height,
-        first_floor_area=first_floor_area,
-        first_floor_height=first_floor_height,
-        second_floor_area=second_floor_area,
-        second_floor_height=second_floor_height,
-        third_floor_area=third_floor_area,
-        third_floor_height=third_floor_height,
+        building_volume=building_volume,
+        ventilation_method=None,
+        heat_exchanger_efficiency=None,
+        ventilation_method_names=None,
+        no_sides_sheltered=None,
+        no_chimneys=None,
+        no_open_flues=None,
+        no_fans=None,
+        no_room_heaters=None,
+        is_draught_lobby=None,
+        is_permeability_tested=None,
+        permeability_test_result=None,
+        no_storeys=None,
+        percentage_draught_stripped=None,
+        is_floor_suspended=None,
+        structure_type=None,
+        draught_lobby_boolean=None,
+        suspended_floor_types=None,
+        structure_types=None,
+        permeability_test_boolean=None,
+        ventilation_heat_loss_constant=0.33,
     )
-    rounded_output = output.round().astype("int64")
 
-    assert_series_equal(rounded_output, expected_output)
+    assert_series_equal(output, expected_output)
