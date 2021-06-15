@@ -52,7 +52,7 @@ def _calculate_infiltration_rate_due_to_openings(
     is_building_empty = building_volume == 0
     infiltration_rate_due_to_draught_lobby = is_draught_lobby.map(
         draught_lobby_boolean
-    ).map({True: 0.05, False: 0})
+    ).map({True: 0, False: 0.05})
     return building_volume.where(
         is_building_empty,
         infiltration_rate_due_to_openings / building_volume
