@@ -131,3 +131,6 @@ dmypy.json
 # custom
 .vscode
 data/
+_build/
+_static/
+_templates/
