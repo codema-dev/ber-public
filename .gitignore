@@ -134,3 +134,5 @@ data/
 _build/
 _static/
 _templates/
+junit.xml
+BERPublicsearch*
