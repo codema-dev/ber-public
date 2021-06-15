@@ -33,7 +33,6 @@ def calculate_fabric_heat_loss(
 
 
 def calculate_heat_loss_parameter(
-    building_volume: pd.Series,
     fabric_heat_loss: pd.Series,
     ventilation_heat_loss: pd.Series,
     total_floor_area: pd.Series,
