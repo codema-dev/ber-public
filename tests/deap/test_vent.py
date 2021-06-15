@@ -103,28 +103,23 @@ def test_calculate_infiltration_rate(monkeypatch):
     assert_series_equal(output.round(2), expected_output)
 
 
-def test_calculate_outside_ventilation_air_rate_change():
-    infiltration_rate = pd.Series([0.15, 1])
-    expected_output = pd.Series([0.5, 1.25])
-    output = vent._calculate_outside_ventilation_air_rate_change(infiltration_rate)
-    assert_series_equal(output, expected_output)
-
-
-def test_calculate_natural_ventilation_air_rate_change():
-    infiltration_rate = pd.Series([2, 0.5])
-    expected_output = pd.Series([2, 0.625])
-    output = vent._calculate_natural_ventilation_air_rate_change(infiltration_rate)
-    assert_series_equal(output, expected_output)
-
-
 def test_calculate_effective_air_rate_change():
-
-    nrows = 6
-    ventilation_method = pd.Series(vent.VENTILATION_METHODS.keys())
-    building_volume = pd.Series([100] * nrows)
-    infiltration_rate = pd.Series([0.15] * nrows)
-    heat_exchanger_efficiency = pd.Series([0.9] * nrows)
-    expected_output = pd.Series([0.51125, 0.7112499999999999, 0.5, 0.5, 0.65, 0.1505])
+    """Output is equivalent to DEAP 4.2.0 example A"""
+    n_methods = 6
+    ventilation_method = pd.Series(
+        [
+            "Natural vent.",
+            "Pos input vent.- loft",
+            "Pos input vent.- outside",
+            "Whole house extract vent.",
+            "Bal.whole mech.vent no heat re",
+            "Bal.whole mech.vent heat recvr",
+        ]
+    )
+    building_volume = pd.Series([321] * n_methods)
+    infiltration_rate = pd.Series([0.2] * n_methods)
+    heat_exchanger_efficiency = pd.Series([0] * n_methods)
+    expected_output = pd.Series([0.52, 0.58, 0.5, 0.5, 0.7, 0.7])
 
     output = vent.calculate_effective_air_rate_change(
         ventilation_method=ventilation_method,
@@ -134,7 +129,7 @@ def test_calculate_effective_air_rate_change():
         ventilation_method_names=vent.VENTILATION_METHODS,
     )
 
-    assert_series_equal(output, expected_output)
+    assert_series_equal(output.round(2), expected_output)
 
 
 def test_calculate_ventilation_heat_loss(monkeypatch):

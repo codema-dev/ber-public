@@ -166,7 +166,7 @@ def _calculate_heat_recovery_ventilation_air_rate_change(
     infiltration_rate,
     heat_exchanger_efficiency,
 ):
-    return infiltration_rate + 0.5 * (1 - heat_exchanger_efficiency) / 100
+    return infiltration_rate + 0.5 * (1 - heat_exchanger_efficiency / 100)
 
 
 def calculate_effective_air_rate_change(
@@ -193,9 +193,7 @@ def calculate_effective_air_rate_change(
         infiltration_rate[methods == "heat_recovery"],
         heat_exchanger_efficiency[methods == "heat_recovery"],
     )
-    return pd.concat([natural, loft, outside, mech, heat_recovery]).reset_index(
-        drop=True
-    )
+    return pd.concat([natural, loft, outside, mech, heat_recovery]).sort_index()
 
 
 def calculate_ventilation_heat_loss(
