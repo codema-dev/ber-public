@@ -135,9 +135,10 @@ def calculate_infiltration_rate(
         permeability_test_boolean=permeability_test_boolean,
     )
 
-    return (
+    infiltration_rate = (
         infiltration_rate_due_to_openings + infiltration_rate_due_to_structure
-    ) * 1 - no_sides_sheltered * 0.075
+    )
+    return infiltration_rate * (1 - no_sides_sheltered * 0.075)
 
 
 def _calculate_natural_ventilation_air_rate_change(infiltration_rate):

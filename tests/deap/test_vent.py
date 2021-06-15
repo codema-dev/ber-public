@@ -59,22 +59,26 @@ def test_calculate_infiltration_rate_due_to_structure():
 
 
 def test_calculate_infiltration_rate(monkeypatch):
-    no_sides_sheltered = pd.Series([0, 1])
+    """Output is equivalent to DEAP 4.2.0 example A"""
+    no_sides_sheltered = pd.Series([2, 2])
 
-    def _mock_infiltration_rate_calc(*args, **kwargs):
-        return pd.Series([0.5, 0.5])
+    def _mock_calculate_infiltration_rate_due_to_openings(*args, **kwargs):
+        return pd.Series([0.08, 0.08])
+
+    def _mock_calculate_infiltration_rate_due_to_structure(*args, **kwargs):
+        return pd.Series([0.15, 0.5])
 
     monkeypatch.setattr(
         vent,
         "_calculate_infiltration_rate_due_to_openings",
-        _mock_infiltration_rate_calc,
+        _mock_calculate_infiltration_rate_due_to_openings,
     )
     monkeypatch.setattr(
         vent,
         "_calculate_infiltration_rate_due_to_structure",
-        _mock_infiltration_rate_calc,
+        _mock_calculate_infiltration_rate_due_to_structure,
     )
-    expected_output = pd.Series([1, 0.925])
+    expected_output = pd.Series([0.2, 0.49])
 
     output = vent.calculate_infiltration_rate(
         no_sides_sheltered=no_sides_sheltered,
@@ -96,7 +100,7 @@ def test_calculate_infiltration_rate(monkeypatch):
         permeability_test_boolean=None,
     )
 
-    assert_series_equal(output, expected_output)
+    assert_series_equal(output.round(2), expected_output)
 
 
 def test_calculate_outside_ventilation_air_rate_change():
