@@ -1,0 +1,2 @@
+ber_public/_version.py export-subst
+* text=auto eol=lf

@@ -1,0 +1,7 @@
+[report]
+omit =
+    setup.py
+    ber_public/__main__.py
+    ber_public/_version.py
+    versioneer.py
+    tests/*
