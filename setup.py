@@ -19,9 +19,9 @@ setup(
     author_email="rowan.molony@codema.ie",
     url="https://github.com/rdmolony/ber-public",
     packages=["ber_public"],
-    entry_points={"console_scripts": ["ber-public=ber-public.cli:cli"]},
+    entry_points={"console_scripts": ["ber_public=ber_public.cli:cli"]},
     install_requires=requirements,
-    keywords="ber-public",
+    keywords="ber_public",
     classifiers=[
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.6",
