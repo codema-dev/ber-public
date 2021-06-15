@@ -198,51 +198,7 @@ def calculate_effective_air_rate_change(
 
 def calculate_ventilation_heat_loss(
     building_volume,
-    ventilation_method,
-    heat_exchanger_efficiency,
-    no_sides_sheltered,
-    no_chimneys,
-    no_open_flues,
-    no_fans,
-    no_room_heaters,
-    is_draught_lobby,
-    is_permeability_tested,
-    permeability_test_result,
-    no_storeys,
-    percentage_draught_stripped,
-    is_floor_suspended,
-    structure_type,
-    ventilation_method_names=VENTILATION_METHODS,
-    draught_lobby_boolean=YES_NO,
-    suspended_floor_types=SUSPENDED_FLOOR_TYPES,
-    structure_types=STRUCTURE_TYPES,
-    permeability_test_boolean=YES_NO,
+    effective_air_rate_change,
     ventilation_heat_loss_constant=0.33,  # SEAI, DEAP 4.2.0
 ):
-    infiltration_rate = calculate_infiltration_rate(
-        no_sides_sheltered=no_sides_sheltered,
-        building_volume=building_volume,
-        no_chimneys=no_chimneys,
-        no_open_flues=no_open_flues,
-        no_fans=no_fans,
-        no_room_heaters=no_room_heaters,
-        is_draught_lobby=is_draught_lobby,
-        is_permeability_tested=is_permeability_tested,
-        permeability_test_result=permeability_test_result,
-        no_storeys=no_storeys,
-        percentage_draught_stripped=percentage_draught_stripped,
-        is_floor_suspended=is_floor_suspended,
-        structure_type=structure_type,
-        draught_lobby_boolean=draught_lobby_boolean,
-        suspended_floor_types=suspended_floor_types,
-        structure_types=structure_types,
-        permeability_test_boolean=permeability_test_boolean,
-    )
-    effective_air_rate_change = calculate_effective_air_rate_change(
-        ventilation_method=ventilation_method,
-        building_volume=building_volume,
-        infiltration_rate=infiltration_rate,
-        heat_exchanger_efficiency=heat_exchanger_efficiency,
-        ventilation_method_names=ventilation_method_names,
-    )
     return building_volume * ventilation_heat_loss_constant * effective_air_rate_change
