@@ -60,9 +60,7 @@ def _extract_expected_columns(
 def calculate_fabric_heat_loss(
     raw_ber: pd.DataFrame, column_names: Dict[str, str] = COLUMNS_NAMES
 ) -> pd.Series:
-    building_stock = _extract_expected_columns(
-        raw_ber=raw_ber, column_names=column_names
-    )
+    building_stock = raw_ber.copy().rename(columns=column_names)
     return fab.calculate_fabric_heat_loss(
         roof_area=building_stock["roof_area"],
         roof_uvalue=building_stock["roof_uvalue"],
@@ -81,9 +79,7 @@ def calculate_fabric_heat_loss(
 def calculate_ventilation_heat_loss(
     raw_ber: pd.DataFrame, column_names: Dict[str, str] = COLUMNS_NAMES
 ) -> pd.Series:
-    building_stock = _extract_expected_columns(
-        raw_ber=raw_ber, column_names=column_names
-    )
+    building_stock = raw_ber.copy().rename(columns=column_names)
     building_volume = (
         building_stock["ground_floor_area"].fillna(0)
         * building_stock["ground_floor_height"].fillna(0)
@@ -149,9 +145,7 @@ def _calculate_total_floor_area(
 def calculate_heat_loss_parameter(
     raw_ber: pd.DataFrame, column_names: Dict[str, str] = COLUMNS_NAMES
 ) -> pd.Series:
-    building_stock = _extract_expected_columns(
-        raw_ber=raw_ber, column_names=column_names
-    )
+    building_stock = raw_ber.copy().rename(columns=column_names)
     heat_loss_coefficient = calculate_heat_loss_coefficient(
         raw_ber=raw_ber, column_names=column_names
     )
