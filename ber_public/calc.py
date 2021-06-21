@@ -4,9 +4,9 @@ from typing import Dict
 import pandas as pd
 from pandas.io.formats.format import buffer_put_lines
 
-from ber_public.deap import fab
-from ber_public.deap import htuse
-from ber_public.deap import vent
+from rc_building_model import fab
+from rc_building_model import htuse
+from rc_building_model import vent
 
 # Map all expected column names to the ber_public column name convention
 COLUMNS_NAMES = {
